@@ -18,16 +18,9 @@
     <button (click)="addTodo()">OK</button>
 }
 
-<ul>
-    @for (todo of todos.sort(); track todo) {
-        <li>
-            <input type="checkbox" [checked]="todo.isCompleted" (change)="completeTodo($index, $event)">
-            <span [ngClass]="getTodoItemStyle(todo)" (click)="editTodo($index)" (keydown)="editTodo($index)" tabindex="0">
-                {{todo.text}} - {{todo.priority}}
-            </span>
-            <button (click)="removeTodo($index)">X</button>
-        </li>
-    } @empty {
-        <li>Keine Todos vorhanden</li>
-    }
-</ul>
+<app-list-box
+    [todos]="todos"
+    (completeTodoChanged)="completeTodo($event.todoIndex, $event.isCompleted)"
+    (editTodoClicked)="editTodo($event)"
+    (removeTodoClicked)="removeTodo($event)"
+/>

@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AutoInputWidthDirective } from '../auto-input-width.directive';
+import { ListBoxComponent } from '../list-box/list-box.component';
 
-type Priority = 'low' | 'normal' | 'high';
+export type Priority = 'low' | 'normal' | 'high';
 
-interface Todo {
+export interface Todo {
   text: string;
   isCompleted: boolean;
   priority: Priority;
@@ -13,7 +14,7 @@ interface Todo {
 @Component({
   selector: 'app-todolist',
   standalone: true,
-  imports: [CommonModule, AutoInputWidthDirective],
+  imports: [CommonModule, AutoInputWidthDirective, ListBoxComponent],
   templateUrl: './todolist.component.html',
   styleUrl: './todolist.component.scss'
 })
@@ -63,18 +64,11 @@ export class TodolistComponent {
     this.updateTodoIndex = -1;
   }
 
-  completeTodo(todoIndex: number, event: Event) {
-    this.todos[todoIndex].isCompleted = (event.target as HTMLInputElement).checked;
+  completeTodo(todoIndex: number, isCompleted: boolean) {
+    this.todos[todoIndex].isCompleted = isCompleted;
   }
 
   removeTodo(todoIndex: number) {
     this.todos.splice(todoIndex, 1);
-  }
-
-  getTodoItemStyle(todo: Todo) {
-    return {
-      done: todo.isCompleted,
-      'priority-high': todo.priority === 'high',
-    }
-  }
+  }  
 }
