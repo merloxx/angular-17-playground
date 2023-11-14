@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Todo } from '../todolist/todolist.component';
+import { MyUpperCasePipe } from '../my-upper-case.pipe';
 
 @Component({
   selector: 'app-list-box',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MyUpperCasePipe],
   templateUrl: './list-box.component.html',
   styleUrl: './list-box.component.scss'
 })
