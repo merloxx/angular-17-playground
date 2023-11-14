@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AutoInputWidthDirective } from '../auto-input-width.directive';
 
 type Priority = 'low' | 'normal' | 'high';
 
@@ -12,7 +13,7 @@ interface Todo {
 @Component({
   selector: 'app-todolist',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, AutoInputWidthDirective],
   templateUrl: './todolist.component.html',
   styleUrl: './todolist.component.scss'
 })

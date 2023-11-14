@@ -1,6 +1,6 @@
 @if (isEditMode) {
     <h3>Todo bearbeiten:</h3>
-    <input type="text" [value]="todoText" (change)="changeTodoText($event)">
+    <input type="text" [value]="todoText" (change)="changeTodoText($event)" appAutoInputWidth="200">
     <select [value]="priority" (change)="changePriority($event)">
         <option value="low">Niedrig</option>
         <option value="normal">Normal</option>
@@ -9,7 +9,7 @@
     <button (click)="updateTodo()">OK</button>
 } @else {
     <h3>Neues Todo:</h3>
-    <input type="text" [value]="todoText" (change)="changeTodoText($event)">
+    <input type="text" [value]="todoText" (change)="changeTodoText($event)" [appAutoInputWidth]="200">
     <select [value]="priority" (change)="changePriority($event)">
         <option value="low">Niedrig</option>
         <option value="normal">Normal</option>
