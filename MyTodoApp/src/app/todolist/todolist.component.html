@@ -1,0 +1,33 @@
+@if (isEditMode) {
+    <h3>Todo bearbeiten:</h3>
+    <input type="text" [value]="todoText" (change)="changeTodoText($event)">
+    <select [value]="priority" (change)="changePriority($event)">
+        <option value="low">Niedrig</option>
+        <option value="normal">Normal</option>
+        <option value="high">Hoch</option>
+    </select>
+    <button (click)="updateTodo()">OK</button>
+} @else {
+    <h3>Neues Todo:</h3>
+    <input type="text" [value]="todoText" (change)="changeTodoText($event)">
+    <select [value]="priority" (change)="changePriority($event)">
+        <option value="low">Niedrig</option>
+        <option value="normal">Normal</option>
+        <option value="high">Hoch</option>
+    </select>
+    <button (click)="addTodo()">OK</button>
+}
+
+<ul>
+    @for (todo of todos.sort(); track todo) {
+        <li>
+            <input type="checkbox" [checked]="todo.isCompleted" (change)="completeTodo($index, $event)">
+            <span [ngClass]="getTodoItemStyle(todo)" (click)="editTodo($index)" (keydown)="editTodo($index)" tabindex="0">
+                {{todo.text}} - {{todo.priority}}
+            </span>
+            <button (click)="removeTodo($index)">X</button>
+        </li>
+    } @empty {
+        <li>Keine Todos vorhanden</li>
+    }
+</ul>
