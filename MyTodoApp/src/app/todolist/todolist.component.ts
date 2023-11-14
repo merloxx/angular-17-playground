@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AutoInputWidthDirective } from '../auto-input-width.directive';
 import { ListBoxComponent } from '../list-box/list-box.component';
+import { ChucknorrisService, Joke } from '../chucknorris.service';
 
 export type Priority = 'low' | 'normal' | 'high';
 
@@ -24,6 +25,8 @@ export class TodolistComponent {
   updateTodoIndex: number = -1;
   isEditMode = false;
   priority: Priority = 'normal';
+  chucknorrisService: ChucknorrisService = inject(ChucknorrisService);
+  jokeText: string =  '';
 
   changeTodoText(event: Event) {
     this.todoText = (event.target as HTMLInputElement).value;
@@ -66,6 +69,12 @@ export class TodolistComponent {
 
   completeTodo(todoIndex: number, isCompleted: boolean) {
     this.todos[todoIndex].isCompleted = isCompleted;
+    
+    if (isCompleted) {
+      this.chucknorrisService.loadJoke().subscribe((joke: Joke) => {
+        this.jokeText = joke.value;
+      })
+    }
   }
 
   removeTodo(todoIndex: number) {
