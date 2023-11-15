@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AutoInputWidthDirective } from '../auto-input-width.directive';
 import { ListBoxComponent } from '../list-box/list-box.component';
 import { ChucknorrisService, Joke } from '../chucknorris.service';
+import { Router } from '@angular/router';
 
 export type Priority = 'low' | 'normal' | 'high';
 
@@ -27,6 +28,7 @@ export class TodolistComponent {
   isEditMode = signal(false);
   jokeText = signal('');
   chucknorrisService: ChucknorrisService = inject(ChucknorrisService);
+  router = inject(Router);
 
   changeTodoText(event: Event) {
     const changeText = (event.target as HTMLInputElement).value;
@@ -81,5 +83,13 @@ export class TodolistComponent {
 
   removeTodo(todoIndex: number) {
     this.todos.update(todos => todos.filter((_, index) => index !== todoIndex));
-  }  
+  }
+
+  goToAboutMePage() {
+    this.router.navigate(['about'], {
+      state: this.todos()[0],  
+      queryParams: { 'big-title': 'true' },
+      fragment: 'disclaimer'
+    });
+  }
 }
