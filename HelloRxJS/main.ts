@@ -13,7 +13,7 @@ fromEvent(userInput, 'keyup').pipe(
 console.clear();
 */
 
-import { Observable, concatMap } from "rxjs";
+import { Observable, concatMap, share } from "rxjs";
 
 interface Person {
 	name: string;
@@ -64,11 +64,15 @@ class HttpClient {
 }
 
 const httpClient = new HttpClient();
-
-httpClient
+const personRequest = httpClient
     .get<Person>('https://swapi.dev/api/people/1')
+    .pipe(share());
+
+personRequest
+    .subscribe((person) => console.log('Name: ', person.name));
+
+personRequest
     .pipe(
         concatMap((person) => person.films),
         concatMap((filmUrl) => httpClient.get<Films>(filmUrl))
-    )
-    .subscribe((films) => console.log(films.title));
+    ).subscribe((film) => console.log('Film: ', film.title));
