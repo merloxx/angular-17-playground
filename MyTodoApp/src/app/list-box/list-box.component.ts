@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Todo } from '../todolist/todolist.component';
 import { MyUpperCasePipe } from '../my-upper-case.pipe';
@@ -12,7 +12,7 @@ import { MyUpperCasePipe } from '../my-upper-case.pipe';
 })
 export class ListBoxComponent {
   @Input({ required: true })
-  todos: Todo[] = [];
+  todos = signal<Todo[]>([]);
 
   @Output()
   completeTodoChanged = new EventEmitter<{ todoIndex: number, isCompleted: boolean }>();
@@ -23,10 +23,10 @@ export class ListBoxComponent {
   @Output()
   removeTodoClicked = new EventEmitter<number>();
 
-  completeTodo(todoIndex: number, isCompleted: boolean) {
+  completeTodo(todoIndex: number, event: Event) {
     this.completeTodoChanged.emit({
       todoIndex,
-      isCompleted: isCompleted
+      isCompleted: (event.target as HTMLInputElement).checked
     })
   }
 

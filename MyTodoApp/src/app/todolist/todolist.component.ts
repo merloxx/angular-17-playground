@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AutoInputWidthDirective } from '../auto-input-width.directive';
 import { ListBoxComponent } from '../list-box/list-box.component';
@@ -20,64 +20,66 @@ export interface Todo {
   styleUrl: './todolist.component.scss'
 })
 export class TodolistComponent {
-  todoText: string = '';
-  todos: Todo[] = [];
-  updateTodoIndex: number = -1;
-  isEditMode = false;
-  priority: Priority = 'normal';
+  todoText = signal('');
+  todos = signal<Todo[]>([]);
+  priority = signal<Priority>('normal');
+  updateTodoIndex = signal(-1);
+  isEditMode = signal(false);
+  jokeText = signal('');
   chucknorrisService: ChucknorrisService = inject(ChucknorrisService);
-  jokeText: string =  '';
 
   changeTodoText(event: Event) {
-    this.todoText = (event.target as HTMLInputElement).value;
+    const changeText = (event.target as HTMLInputElement).value;
+    this.todoText.set(changeText) ;
   }
 
   changePriority(event: Event) {
-    this.priority = (event?.target as HTMLInputElement).value as Priority;
+    const changePriority = (event.target as HTMLInputElement).value as Priority;
+    this.priority.set(changePriority);
   }
 
   addTodo() {
     const todo: Todo = {
-      text: this.todoText,
+      text: this.todoText(),
       isCompleted: false,
-      priority: this.priority,
+      priority: this.priority(),
     }
     
-    this.todos.push(todo);
-    this.todoText = '';
+    this.todos.update(todos => [...todos, todo]);
+    this.todoText.set('');
   }
 
   editTodo(todoIndex: number) {
-    this.isEditMode = true;
-    this.updateTodoIndex = todoIndex;
+    this.isEditMode.set(true);
+    this.updateTodoIndex.set(todoIndex);
 
-    const todo = this.todos[this.updateTodoIndex];
-    this.todoText = todo.text;
-    this.priority = todo.priority;
+    const todo = this.todos()[todoIndex];
+    this.todoText.set(todo.text);
+    this.priority.set(todo.priority);
   }
 
   updateTodo() {
-    this.isEditMode = false;
+    this.isEditMode.set(false);
 
-    const todo = this.todos[this.updateTodoIndex];
-    todo.text = this.todoText;
-    todo.priority = this.priority;
+    const todo = this.todos()[this.updateTodoIndex()];
+    todo.text = this.todoText();
+    todo.priority = this.priority();
 
-    this.todoText = '';
-    this.updateTodoIndex = -1;
+    this.todoText.set('');
+    this.updateTodoIndex.set(-1);
   }
 
   completeTodo(todoIndex: number, isCompleted: boolean) {
-    this.todos[todoIndex].isCompleted = isCompleted;
+    this.todos()[todoIndex].isCompleted = isCompleted;
     
     if (isCompleted) {
       this.chucknorrisService.loadJoke().subscribe((joke: Joke) => {
-        this.jokeText = joke.value;
+        this.jokeText.set(joke.value);
       })
     }
   }
 
   removeTodo(todoIndex: number) {
-    this.todos.splice(todoIndex, 1);
+    this.todos.update(todos => todos.filter((_, index) => index !== todoIndex));
   }  
 }

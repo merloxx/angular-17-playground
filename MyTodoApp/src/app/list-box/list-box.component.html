@@ -1,7 +1,7 @@
 <ul>
-    @for (todo of todos.sort(); track todo) {
+    @for (todo of todos().sort(); track todo) {
         <li>
-            <input type="checkbox" [checked]="todo.isCompleted" (change)="completeTodo($index, todo.isCompleted)">
+            <input type="checkbox" [checked]="todo.isCompleted" (change)="completeTodo($index, $event)">
             <span [ngClass]="getTodoItemStyle(todo)" (click)="editTodo($index)" (keydown)="editTodo($index)" tabindex="0">
                 {{todo.text | myUpperCase }} - {{todo.priority}}
             </span>
