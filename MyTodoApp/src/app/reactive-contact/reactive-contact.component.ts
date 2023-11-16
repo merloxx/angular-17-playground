@@ -1,7 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { combineLatest, filter, map } from 'rxjs';
+import { filter } from 'rxjs';
+import { ValidationService } from '../validation.service';
 
 @Component({
   selector: 'app-reactive-contact',
@@ -13,6 +14,7 @@ import { combineLatest, filter, map } from 'rxjs';
 export class ReactiveContactComponent implements OnInit {
   powers = ['Really Smart', 'Super Flexible', 'Super Hot', 'Weather Changer'];
   formBuilder = inject(NonNullableFormBuilder);
+  validationService = inject(ValidationService);
   personFormGroup = this.formBuilder.group({
     name: ['', [Validators.required, Validators.minLength(4)]],
     company: ['', Validators.required],
@@ -20,6 +22,8 @@ export class ReactiveContactComponent implements OnInit {
     power: ['', Validators.required],
     password: ['', Validators.required],
     passwordRepeat: ['', Validators.required],
+  }, {
+    validators: this.validationService.passwordsMatch('password', 'passwordRepeat')
   });
   submitted: boolean = false;
 
@@ -29,19 +33,6 @@ export class ReactiveContactComponent implements OnInit {
     ).subscribe(() => {
       this.personFormGroup.controls.company.setErrors({ company: 'Nachrichten von Personen aus dieser Firma akzeptieren wir nicht!'});
     })
-
-    combineLatest([
-      this.personFormGroup.controls.password.valueChanges,
-      this.personFormGroup.controls.passwordRepeat.valueChanges
-    ]).pipe(
-      map(([password, passwordRepeat]) => password === passwordRepeat),
-    ).subscribe((passwordMatch) => {
-      if (passwordMatch && this.personFormGroup.controls.passwordRepeat.value !== '') {
-        this.personFormGroup.controls.passwordRepeat.setErrors(null);
-      } else {
-        this.personFormGroup.controls.passwordRepeat.setErrors({ "password-repeat": 'Passwörter stimmen nicht überein!'});
-      }     
-    });
   }
   
   onSubmit() {

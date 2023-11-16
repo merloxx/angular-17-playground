@@ -27,6 +27,9 @@
                 <div class="form-group">
                     <label for="company">Firma</label>
                     <input type="text" class="form-control" id="company" name="company" formControlName="company">
+                    <small [hidden]="personFormGroup.get('company')?.untouched || !personFormGroup.get('company')?.hasError('required')" class="text-danger">
+                        Firma ist ein Pflichtfeld!
+                    </small>
                     @if (personFormGroup.get('company')?.hasError('company')) {
                         <small class="text-danger">
                             {{ personFormGroup.get('company')?.errors?.['company'] }}
@@ -68,9 +71,9 @@
                 <div class="form-group">
                     <label for="password-repeat">Passwort wiederholen</label>
                     <input type="password" class="form-control" id="password-repeat" name="password-repeat" formControlName="passwordRepeat">
-                    @if (personFormGroup.get('passwordRepeat')?.hasError('password-repeat')) {
+                    @if (personFormGroup.hasError('password-repeat')) {
                         <small class="text-danger">
-                            {{ personFormGroup.get('passwordRepeat')?.errors?.['password-repeat'] }}
+                            {{ personFormGroup.errors?.['password-repeat'] }}
                         </small>
                     }
                 </div>
