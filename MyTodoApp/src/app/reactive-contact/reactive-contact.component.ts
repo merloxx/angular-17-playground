@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { filter } from 'rxjs';
+import { combineLatest, filter, map } from 'rxjs';
 
 @Component({
   selector: 'app-reactive-contact',
@@ -18,6 +18,8 @@ export class ReactiveContactComponent implements OnInit {
     company: ['', Validators.required],
     age: '',
     power: ['', Validators.required],
+    password: ['', Validators.required],
+    passwordRepeat: ['', Validators.required],
   });
   submitted: boolean = false;
 
@@ -27,6 +29,19 @@ export class ReactiveContactComponent implements OnInit {
     ).subscribe(() => {
       this.personFormGroup.controls.company.setErrors({ company: 'Nachrichten von Personen aus dieser Firma akzeptieren wir nicht!'});
     })
+
+    combineLatest([
+      this.personFormGroup.controls.password.valueChanges,
+      this.personFormGroup.controls.passwordRepeat.valueChanges
+    ]).pipe(
+      map(([password, passwordRepeat]) => password === passwordRepeat),
+    ).subscribe((passwordMatch) => {
+      if (passwordMatch && this.personFormGroup.controls.passwordRepeat.value !== '') {
+        this.personFormGroup.controls.passwordRepeat.setErrors(null);
+      } else {
+        this.personFormGroup.controls.passwordRepeat.setErrors({ "password-repeat": 'Passwörter stimmen nicht überein!'});
+      }     
+    });
   }
   
   onSubmit() {
