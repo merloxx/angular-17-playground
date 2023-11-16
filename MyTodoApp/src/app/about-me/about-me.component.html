@@ -108,7 +108,14 @@
     Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid vitae rerum eligendi quia saepe optio, possimus nisi officia.
     Magni explicabo nobis distinctio dolorum? Aperiam quas aut nobis? Tempore, nesciunt possimus.
 </p>
-<p>
-    Alias id quod eveniet perspiciatis voluptatum libero dignissimos cum nam corporis, consectetur ut error provident dolore.
-    Doloribus, iste ipsa, dicta amet id, tenetur placeat quae obcaecati voluptates eveniet dolorem omnis!
-</p>
+@defer (on viewport) {
+    <h3>LOADED</h3>
+    <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, nostrum! Placeat, architecto dolorem temporibus
+        consequatur ipsam, possimus cum commodi et pariatur eum voluptate laudantium perferendis ab aperiam quidem, facere
+        veritatis.
+    </p>
+}
+@placeholder {
+    <span>Loading...</span>
+}
