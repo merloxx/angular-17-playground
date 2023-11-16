@@ -1,7 +1,33 @@
-<h1>{{title}}</h1>
 
-<a routerLink="" routerLinkActive="active-page" [routerLinkActiveOptions]="{ exact: true }">Todo-List</a> ||
-<a routerLink="about" routerLinkActive="active-page">Über mich</a> ||
-<button (click)="reloadJoke()">Lade Joke</button>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" routerLink="">{{title}}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Todo-List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="about" routerLinkActive="active">Über mich</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="contact" routerLinkActive="active">Kontakt</a>
+                </li>
+                <li class="nav-item">
+                    <button class="btn btn-sm mt-1 btn-primary" (click)="reloadJoke()">Lade Joke</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-<router-outlet />
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12 col-md-8 col-lg-6 offset-md-2 offset-lg-3">
+            <router-outlet />
+        </div>
+    </div>
+</div>
