@@ -1,0 +1,61 @@
+<form #personForm="ngForm" (ngSubmit)="onSubmit()">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h3>Kontaktformular</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col mb-2">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input #name="ngModel" type="text" class="form-control" id="name" name="name" [(ngModel)]="person.name" required minlength="4">
+                    <small [hidden]="name.untouched || name.valid" class="text-danger">
+                        Name ist ein Pflichtfeld!
+                    </small>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col mb-2">
+                <div class="form-group">
+                    <label for="company">Firma</label>
+                    <input #company="ngModel" type="text" class="form-control" id="company" name="company" [(ngModel)]="person.company" required appCompanyValidator>
+                    <small [hidden]="!company.errors?.['wrong-company']" class="text-danger">
+                        {{ company.errors?.['wrong-company'] }}
+                    </small>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <div class="form-group">
+                    <label for="age">Alter</label>
+                    <input type="text" class="form-control" id="age" name="age" [(ngModel)]="person.age">
+                </div>
+            </div>
+            <div class="col-12 col-md-8">
+                <div class="form-group">
+                    <label for="power">Power</label>
+                    <select #power="ngModel" class="form-control" id="power" name="power" [(ngModel)]="person.power" required>
+                        <option *ngFor="let power of powers" [value]="power">{{ power }}</option>
+                    </select>
+                    <small [hidden]="power.untouched || power.valid" class="text-danger">
+                        Power ist ein Pflichtfeld!
+                    </small>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-12 d-flex justify-content-end">
+                <button type="reset" class="btn btn-default">Abbrechen</button>
+                <button type="submit" class="btn btn-success" [disabled]="personForm.form.invalid">Senden</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<pre>
+{{ submitted }}
+{{ diagnostic }}
+</pre>
